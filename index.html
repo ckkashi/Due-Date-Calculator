@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>save data to gs</title>
+    </head>
+    <body>
+
+	<script defer>
+        async function calculateDueDate() {
+            const day = parseInt(document.getElementById('day').value);
+            const month = parseInt(document.getElementById('month').value);
+            const year = parseInt(document.getElementById('year').value);
+            const cycleLength = parseInt(document.getElementById('cycle-length').value);
+            const userEmail = document.getElementById('email').value;
+            var emailValidRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            // console.log(userEmail);
+
+            if (!day || !month || !year || !cycleLength || !userEmail.match(emailValidRegex)) {
+                alert('Please enter all the required information.');
+                return;
+            }
+
+            const lastPeriodDate = new Date(year, month - 1, day);
+            const dueDate = new Date(lastPeriodDate.getTime() + (cycleLength + 280 - 28) * 24 * 60 * 60 * 1000);
+            // console.log(dueDate);
+            
+            const result = document.getElementById('result');
+            result.innerHTML = 'Please wait, <strong> Loading </Strong>'
+            const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbwHyLmOi8C5N3YLNhL-PXYE17ige1h-QzpvgCCT8eyazGCpxpGy71yCn7t4lyYOMvBt3w/exec?DAY="+day+"&MONTH="+month+"&YEAR="+year+"&CYCLELENGTH="+cycleLength+"&RESULT="+dueDate.toDateString()+"&EMAIL="+userEmail
+    );
+    const data = await response.json();
+            // console.log(data);
+
+            result.innerHTML = 'Your estimated due date is: <strong>' + dueDate.toDateString() + '</strong>';
+        }
+    </script>
+        
+        <!-- <p>Due Date Calculator</p> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .calculator-container, .info-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            text-align: center;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="number"], input[type="text"], input[type="email"] {
+            width: calc(33.33% - 10px);
+            padding: 10px;
+            margin-right: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="number"]:last-child {
+            margin-right: 0;
+        }
+        .cycle-length {
+            width: 100%;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .info-container p {
+            margin: 10px 0;
+        }
+    </style>
+<div class="container">
+    <div class="calculator-container">
+        <h2>Due Date Calculator</h2>
+        <p>The calculator on this page can help you work out when you might expect your baby to arrive.</p>
+        <label for="day">When was the first day of your last period?</label>
+        <p>For example, 15 12 2023</p>
+        <input type="number" id="day" placeholder="Day" min="1" max="31"> <input type="number" id="month" placeholder="Month" min="1" max="12"> <input type="number" id="year" placeholder="Year" min="1900" max="2100"> <label for="cycle-length">Cycle length in days</label>
+        <p>Some women's cycles are not exactly 28 days. Adjust the cycle length if your cycle is shorter or longer than 28 days.</p>
+        <input type="number" id="cycle-length" class="cycle-length" placeholder="28" value="28" min="20" max="45"><br/>
+        <label for="email">Enter Email</label>
+        <input type="email" id="email" placeholder="Email" required><br/><br/>
+        <button class="submit-button" onclick="calculateDueDate()">Show your due date</button>
+        <div class="result" id="result"></div>
+    </div>
+<div class="info-container">
+<h2>Using the due date calculator</h2>
+<p>To find your due date, enter the date of the first day of your last period, and select 'show your due date'. Pregnancy normally lasts from 37 weeks to 42 weeks from the first day of your last period.</p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">What is a Pregnancy Calculator?</span></h2>
+<p><span style="font-weight: 400;" data-mce-style="font-weight: 400;">A pregnancy calculator is an online tool that helps you estimate important dates in your pregnancy. You can put your last menstrual period date often called (LMP) and it will calculate and tell you your expected due date and progress of pregnancy week by week. It will also tell you the significant milestones of the journey so you can stay prepared and informed. It is indeed a very useful tool for pregnant mothers as it helps monitor their pregnancy and help them understand the development and milestones of the upcoming baby so mothers can stay informed about upcoming appointments and important ultrasounds or tests.</span></p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Ornavo Pregnancy Calculator: Your Companion for a Smooth Journey</span></h2>
+<p>Pregnancy calculators can sometimes get tricky to use and may give false information but you don't have to worry if you are using Ornavo’s&nbsp;Pregnancy Calculator in Pakistan, as it is extremely convenient and easy to use. It provides not only an accurate estimation of your due date but also a detailed week-by-week overview of fetal development, tips for managing common pregnancy symptoms, and personalized health advice. Ornavo’s pregnancy week calculator also provides reminders for checkups, ultrasounds, tests, milestones, and nutritional guidelines.</p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">How to Calculate your&nbsp;</span><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Your Ornavo Pregnancy Journey</span></h2>
+<p><span style="font-weight: 400;" data-mce-style="font-weight: 400;"></span><span style="font-weight: 400;" data-mce-style="font-weight: 400;">At Ornavo, we care for mothers and truly believe that women can do wonders. We understand every journey is unique and deserves care and attention and that is why our approach covers every stage of your pregnancy. We make sure that mothers have access to the right information and have advice or solutions for their problems as well. Our comprehensive resources include tools for monitoring your baby’s growth, advice on managing pregnancy symptoms, and guidelines for maintaining a healthy lifestyle. We strive to support you through each trimester, addressing both the emotional and physical aspects of pregnancy, much like the NHS’s commitment to providing thorough support throughout this significant period.</span></p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Things You Should Know in Pregnancy-Related to Health</span></h2>
+<p><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Pregnant mothers need and deserve extra care and it is also important for the baby. Ornavo provides detailed insights into essential health topics such as balanced nutrition, exercise recommendations, managing stress, and preventing common pregnancy complications. Additionally, we offer guidance on understanding bodily changes, preparing for labor, and postnatal care, ensuring you are well-prepared for each phase of your pregnancy.</span></p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Finding Out - Your Pregnancy To-Do List</span></h2>
+<p><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Early pregnancy can get a little overwhelming but not with your online pregnancy calculator as it will help you streamline your tasks and it will keep you informed about everything even with the upcoming symptoms that you might experience. Ornavo’s tool suggests personalized checklists, including scheduling your first prenatal visit, taking prenatal vitamins, and planning your maternity leave. You can also get tips and useful bits of advice regarding lifestyle adjustments, choosing a healthcare provider, and preparing for baby essentials.</span></p>
+<h2><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Pregnancy with Twins: What to Expect</span></h2>
+<p><span style="font-weight: 400;" data-mce-style="font-weight: 400;">Expecting twins sounds exciting but it comes with unique challenges. Ornavos’ calculator will become our companion in your twin's journey as it offers great pieces of advice and a detailed guide offered by the NHS. From conception to delivery, Ornavo's calculator provides tailored information to help you throughout your twin pregnancy.</span></p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+    </body>
+</html>
